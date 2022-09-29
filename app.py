@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from config import *
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -11,10 +12,25 @@ app.config['SECRET_KEY'] = 'my-secret-key'
 
 
 db = SQLAlchemy(app)
+
 class Users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(100), nullable=False, unique=True)
+    
+    #password stuff
     password = db.Column("password", db.String(100))
+
+    @property
+    def password(self):
+        raise AttributeError("password is not a readable attribute")
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
     confirm_password = db.Column("confirm_password", db.String(100))
 
     def __init__(self, name, password, confirm_password=None):
@@ -35,11 +51,13 @@ def log():
         global found_user
         found_user = Users.query.filter_by(name=username).first()
     
-        if found_user and found_user.password == password:
-            print(found_user.password)
-            return  redirect(url_for('view_plants'))
+        if found_user:
+            if found_user.password == password:
+                return  redirect(url_for('view_plants'))
         else:
-            flash("Username or Password must be incorrect, please check details again")        
+            flash("Username or Password must be incorrect, please check details again")  
+            return render_template("index.html")
+     
     return render_template("index.html")
 
 
