@@ -3,7 +3,7 @@ from config import *
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_login import current_user
 
 
 app = Flask(__name__)
@@ -52,11 +52,12 @@ def log():
     
         if found_user:
             #hash the password!
-            if found_user.password_hash == generate_password_hash(password):
+            passed =check_password_hash(found_user.password_hash, password)
+            if passed:
                 return  redirect(url_for('view_plants'))
-        else:
-            flash("Username or Password must be incorrect, please check details again")  
-            return render_template("index.html")
+            else:
+                flash("Username or Password must be incorrect, please check details again")  
+                return render_template("index.html")
     return render_template("index.html")
 
 
@@ -88,21 +89,24 @@ def register_user():
     return render_template("new_user.html")
 
 
-@app.route("/delete_user", methods=["POST"])
+@app.route("/delete_user")
+
 def delete_user(id):
-    user_to_delete = Users.query.get_or_404(id)
-    try:
-        db.session.delete(user_to_delete)
-        db.session.commit()
-        flash("User deleted successfully")
-        return redirect(url_for('log'))
-    except:
-        flash("there was a problem deleting user")
-        return redirect(url_for('log'))
+    if id ==current_user.id:
+        user_to_delete = Users.query.get_or_404(id)
+        try:
+            db.session.delete(user_to_delete)
+            db.session.commit()
+            flash("User deleted successfully")
+            return redirect(url_for('log'))
+        except:
+            flash("there was a problem deleting user")
+            return redirect(url_for('log'))
 
 
 @app.route('/view_plants', methods=["POST"])
 def view_plants():
+
     return render_template("your_plants.html")
 
 @app.route("/view")
