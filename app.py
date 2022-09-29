@@ -1,33 +1,31 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-import os
+from config import *
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from dotenv import load_dotenv
+
+
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
 
-load_dotenv()
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///Users.sqlite3'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['SECRET_KEY'] = 'my-secret-key'
 
 
 db = SQLAlchemy(app)
-class Users(db.Model, UserMixin):
+class Users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(100), nullable=False, unique=True)
     password = db.Column("password", db.String(100))
     confirm_password = db.Column("confirm_password", db.String(100))
 
-    def __init__(self, name, password, confirm_password=False):
+    def __init__(self, name, password, confirm_password=None):
         self.name = name
         self.password = password
         self.confirm_password = confirm_password
 
 
 
-
-
+ 
+db.create_all()
 @app.route('/log', methods=["POST", "GET"])
 def log():
     if request.method == "POST":
@@ -35,9 +33,10 @@ def log():
         username = request.form['username']
         password = request.form['password']
         global found_user
-        found_user = Users.query.filter_by(name=username, password=password).first()
+        found_user = Users.query.filter_by(name=username).first()
     
-        if found_user:
+        if found_user and found_user.password == password:
+            print(found_user.password)
             return  redirect(url_for('view_plants'))
         else:
             flash("Username or Password must be incorrect, please check details again")        
@@ -53,26 +52,26 @@ def register_user():
         #check that the new passwords the new user has created exists
         if new_password != confirm_password:
             flash("password input fields don't match, please check again")
-            return None
+            return redirect(url_for('register_user'))
 
         #check that the username isn't already taken
         if Users.query.filter_by(name=confirm_username).first():
             flash("Username is already taken. Please pick another one to use.")
-            return None
+            return redirect(url_for('register_user'))
+
         
         #logic to register new user
-        usr = Users(confirm_username, new_password, confirm_password)
-        db.add(usr)
-        db.commit()
-        flash("Account succesffuly created, you are being redirected")
+        usr = Users(name=confirm_username, password=new_password, confirm_password=confirm_password)
+        db.session.add(usr)
+        db.session.commit()
         return  redirect(url_for('log'))
 
     return render_template("new_user.html")
 
 @app.route("/delete user", methods=["POST"])
 def delete_user():
-    db.delete(found_user)
-    db.commit()
+    db.session.delete(found_user)
+    db.session.commit()
     flash("You have successfully deleted the acocount out")
     return redirect(url_for('log'))
 
@@ -86,5 +85,5 @@ def view():
 
 
 if __name__ == "__app__":
-    db.create_all()
+   
     app.run(debug=True)
