@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from config import *
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -9,16 +10,17 @@ app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
 
 app.config['SECRET_KEY'] = 'my-secret-key'
-
+app.config["=SQLALCHEMY_DATABASE_URI"]="sqlite:///Users.sqlite3"
 
 db = SQLAlchemy(app)
+migrate = Migrate(app,db)
 
 class Users(db.Model):
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column("name", db.String(100), nullable=False, unique=True)
     
     #password stuff
-    password = db.Column("password", db.String(100))
+    password_hash = db.Column("password", db.String(100))
 
     @property
     def password(self):
@@ -33,31 +35,28 @@ class Users(db.Model):
 
     confirm_password = db.Column("confirm_password", db.String(100))
 
-    def __init__(self, name, password, confirm_password=None):
+    def __init__(self, name, password_hash, confirm_password=None):
         self.name = name
-        self.password = password
+        self.password_hash = password_hash
         self.confirm_password = confirm_password
 
-
-
- 
 db.create_all()
+
 @app.route('/log', methods=["POST", "GET"])
 def log():
     if request.method == "POST":
         
         username = request.form['username']
         password = request.form['password']
-        global found_user
         found_user = Users.query.filter_by(name=username).first()
     
         if found_user:
-            if found_user.password == password:
+            #hash the password!
+            if found_user.password_hash == generate_password_hash(password):
                 return  redirect(url_for('view_plants'))
         else:
             flash("Username or Password must be incorrect, please check details again")  
             return render_template("index.html")
-     
     return render_template("index.html")
 
 
@@ -79,19 +78,28 @@ def register_user():
 
         
         #logic to register new user
-        usr = Users(name=confirm_username, password=new_password, confirm_password=confirm_password)
+        hashed_password = generate_password_hash(new_password, "sha256")
+
+        usr = Users(name=confirm_username, password_hash=hashed_password)
         db.session.add(usr)
         db.session.commit()
         return  redirect(url_for('log'))
 
     return render_template("new_user.html")
 
-@app.route("/delete user", methods=["POST"])
-def delete_user():
-    db.session.delete(found_user)
-    db.session.commit()
-    flash("You have successfully deleted the acocount out")
-    return redirect(url_for('log'))
+
+@app.route("/delete_user", methods=["POST"])
+def delete_user(id):
+    user_to_delete = Users.query.get_or_404(id)
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
+        flash("User deleted successfully")
+        return redirect(url_for('log'))
+    except:
+        flash("there was a problem deleting user")
+        return redirect(url_for('log'))
+
 
 @app.route('/view_plants', methods=["POST"])
 def view_plants():
