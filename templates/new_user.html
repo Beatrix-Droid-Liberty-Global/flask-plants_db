@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New User</title>
+</head>
+<body>
+    <h1> Welcome to the register page of the plant identifier </h1>
+
+    <form action="{{ url_for('register_user') }}" method="POST">
+    
+
+        <label>Username:<input required type="text" min="4" name="new_username" placeholder="enter your username"></label>
+        <label>Password:<input required type="password" min="4" name="new_password" placeholder="enter your password"></label>
+        <label>Confirm Password:<input required type="password" min="4" name="confirm_password" placeholder="confirm your password"></label>
+
+    
+        <input type="submit" value="Register">
+    
+    </form>
+</body>
+</html>

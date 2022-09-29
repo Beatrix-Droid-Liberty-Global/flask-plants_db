@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}"> 
+    <title>Plants</title>
+</head>
+<body>
+    <h1>Welcome to the plant identifier</h1>
+
+    <h6>Log In if you are an existing customer  or <a href="{{ url_for('register_user') }}"> register for a new account!</a></h6>
+    
+    
+    <form action="/view_plants" method="POST">
+    
+
+    <label>Username:<input required type="text" min="4" name="username" placeholder="enter your username"></label>
+    <label>Password:<input required type="password" min="4" name="password" placeholder="enter your password"></label>
+
+    <input type="submit" value="Login">
+
+</form>
+
+
+
+</body>
+</html>
