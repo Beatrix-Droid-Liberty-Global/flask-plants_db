@@ -15,10 +15,18 @@
         <label>Username:<input required type="text" min="4" name="new_username" placeholder="enter your username"></label>
         <label>Password:<input required type="password" min="4" name="new_password" placeholder="enter your password"></label>
         <label>Confirm Password:<input required type="password" min="4" name="confirm_password" placeholder="confirm your password"></label>
-
-    
         <input type="submit" value="Register">
     
     </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
 </body>
 </html>
