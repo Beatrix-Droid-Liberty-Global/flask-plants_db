@@ -12,11 +12,12 @@
     <p>upload a new plant for identification, view your previous plants or delete all your previously viewd plants</p>
 
     <form action="#" method="post">
-        <label>Upload plant file:<input required type="file"></label>
+        <label> Upload plant file:<input required type="file"></label>
         <input type="submit" value="submit">
     </form>
         <a href="#">view plants:><a>
-   <button><a href="{{ url_for('delete_user', id=id)}}">Delete Account</a></button>
+            <button><a href="{{ url_for('logout')}}">Press Here to Log Out</a></button>
+   <button><a href="#">Press Here to Delete Account</a></button>
         
 </body>
 </html>

@@ -13,13 +13,10 @@
     <h6>Log In if you are an existing customer  or <a href="{{ url_for('register_user') }}"> register for a new account!</a></h6>
     
     <form action="/view_plants" method="POST">
-    
-
-    <label>Username:<input required type="text" min="4" name="username" placeholder="enter your username"></label>
-    <label>Password:<input required type="password" min="4" name="password" placeholder="enter your password"></label>
-
-    <input type="submit" value="Login">
-
+    {{form.hidden_tag()}}
+    {{form.username}}
+    {{form.password}}
+    {{form.submit}}
 </form>
 
 
