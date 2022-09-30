@@ -4,38 +4,55 @@ import json
 from pprint import pprint
 import config
 
-api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={config.API_KEY}"
-
-image_path_1 = "static/user_uploads/snake_plant.jpg"
-#image_data_1 = open(image_path_1, 'rb')
-
-
-#data = {
-	#	'organs': ['leaf']
-#}
-
-#files = [
-	#	('images', (image_path_1, image_data_1))
-#]
-
-#req = requests.Request('POST', url=api_endpoint, files=files, data=data)
-#prepared = req.prepare()
-
-#s = requests.Session()
-#response = s.send(prepared)
-#json_result = json.loads(response.text)
-
-#pprint(response.status_code)
-#pprint(json_result)
 
 
 
 
+def get_jsonresponse(image, organ: str) -> dict:
 
-plant_name = test_json["bestMatch"]
-pictures_uploaded = test_json["query"]["organs"]
-common_name = test_json["results"][2]["species"]["commonNames"]
-family_name = test_json["results"][2]["species"]["family"]["scientificName"]
-genus = test_json["results"][2]["species"]["genus"]["scientificName"]
+	"""A function that accepts an image and an  text input from the user and returns
+	submits the user input to the plant.net machine learning api for plant recognition"""
+	
+	api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={config.API_KEY}"
 
-print(plant_name, pictures_uploaded, common_name, family_name, genus)
+	data = {
+		'organs': [organ]
+	}
+
+	image_path_1 = f"static/user_uploads/{image}"
+	image_data_1 = open(image_path_1, 'rb')
+
+	files = [
+		('images', (image_path_1, image_data_1))
+	]
+	
+	#submit a post request to the api
+	#Whenever you receive a Response object from an API call or a Session call, 
+	# the request attribute is actually the PreparedRequest that was used. 
+	# In some cases you may wish to do some extra work to the body or headers
+	#  (or anything else really) before sending a request.
+	req = requests.Request('POST', url=api_endpoint, files=files, data=data)
+	
+	prepared = req.prepare()
+	
+	#The Session object allows you toparameters across requests.
+	s = requests.Session()
+	response = s.send(prepared)
+	json_result = json.loads(response.text)
+
+	return json_result
+
+
+
+def process_response(json_result):
+
+	""""A function that takes the json from the api response and extracts the information we 
+	need to display on the frontend"""
+
+	plant_name = test_json["bestMatch"]
+	pictures_uploaded = test_json["query"]["organs"]
+	common_name = test_json["results"][2]["species"]["commonNames"]
+	family_name = test_json["results"][2]["species"]["family"]["scientificName"]
+	genus = test_json["results"][2]["species"]["genus"]["scientificName"]
+
+	return plant_name, pictures_uploaded, common_name, family_name, genus

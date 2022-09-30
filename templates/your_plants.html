@@ -11,10 +11,14 @@
   
     <p>upload a new plant for identification, view your previous plants or delete all your previously viewd plants</p>
 
-    <form action="#" method="post">
-        <label> Upload plant file:<input required type="file"></label>
-        <input type="submit" value="submit">
-    </form>
+    <p>Upload an image and select whether it is a leaf, flower, fruit or bark/stem picture</p>
+    <form action="#" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {{ form.file }}
+        {{ form.organs }}
+        {{ form.upload }}
+      
+      </form>
         <a href="#">view plants:><a>
             <button><a href="{{ url_for('logout')}}">Press Here to Log Out</a></button>
    <button><a href="#">Press Here to Delete Account</a></button>
