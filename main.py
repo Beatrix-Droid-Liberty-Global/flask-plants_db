@@ -6,7 +6,7 @@ from flask_login import login_user, LoginManager, login_required, logout_user#fo
 
 from werkzeug.utils import secure_filename #to ensure that users don't upload an file with a potentially dangerous name (sql injections)
 from flask_bcrypt import Bcrypt #for hashing passwords
-from config import SECRET_KEY, SQLALCHEMY_TRACK_MODIFICATIONS, SQLALCHEMY_DATABASE_URI
+from config import SECRET_KEY
 import api_requests #to process the requests from users
 
 
@@ -20,9 +20,24 @@ from wtforms.validators import InputRequired, Length, ValidationError #for valid
 from flask_login import UserMixin
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
+
+#app configurations
+app.config["SECRET_KEY"]= SECRET_KEY
+app.config["MAX_CONTENT_LENGTH"] = 100*1024*1024 #100MB max-limit per image
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =False
+app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///Users.db'
+
+bcrypt = Bcrypt(app)
+db= SQLAlchemy(app)
+login_manager=LoginManager()
+login_manager.init_app(app)#will allow flask and login manager to work together when users are logging in
+login_manager.login_view ="login"
+
+
+
 
 class Users(db.Model, UserMixin):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
@@ -55,23 +70,11 @@ class UploadImage(FlaskForm):
     organs = RadioField('Label', choices=[('leaf','leaf'),('flower','flower'),('fruit','fruit'),('bark','bark/stem')])
     upload = SubmitField("Upload")
 
-    
 
 
-#app configurations
-app.config["SECRET_KEY"]= SECRET_KEY
-app.config["MAX_CONTENT_LENGTH"] = 4*1024*1024 #4MB max-limit per image
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = SQLALCHEMY_TRACK_MODIFICATIONS
-app.config['SQLALCHEMY_DATABASE_URI'] =  'sqlite:///Users.db'
-
-bcrypt = Bcrypt(app)
-db= SQLAlchemy(app)
-login_manager=LoginManager() 
-login_manager.init_app(app)#will allow flask and login manager to work together when users are logging in
-login_manager.login_view ="login"
 
 
-db.create_all()
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -117,11 +120,11 @@ def view_plants():
     #check if the file  the client wants to upload matches the specified requirements
     form = UploadImage()
     if form.validate_on_submit():
-        
+
         filename = secure_filename(form.file.data.filename)
         form.file.data.save('static/user_uploads/' + filename) #grab the file and save it in the uploads directory
 
-        
+
         return render_template("your_plants.html", form = form)
     return render_template("your_plants.html", form = form)
 
@@ -132,6 +135,7 @@ def logout():
     return redirect(url_for("login"))
 
 
-
+db.create_all()
 if __name__ == "__main__":
+
     app.run(debug=True)

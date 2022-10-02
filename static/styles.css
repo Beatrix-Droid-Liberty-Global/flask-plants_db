@@ -1,0 +1,32 @@
+
+form{
+  width: 100%;
+  margin:auto;
+  border-radius: 5px;
+  background-color: rgb(255,255,255);
+  opacity: 0.9;
+}
+
+.form-container{
+  width: 100%;
+  margin:auto;
+}
+
+
+body{
+  background-image: url("https://image.freepik.com/free-vector/cactus-botanical-cacti-green-cactaceous-succulent-plant-botany-illustration-floral-realistic-set-cartoon-exotic-flowers-isolated-transparent-background_109722-1811.jpg");
+}
+
+
+
+h1{
+  text-align: center;
+  background-color: rgb(255,255,255);
+  color:rgb(255,0,0);
+  padding: 10px;
+  border-radius: 10px;
+  position:absolute;
+  top: 5%;
+  left: 30%;
+  right: 30;
+}
