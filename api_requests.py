@@ -1,8 +1,11 @@
 
+## a file that contians teh functions for handling the api requests from the client
+
+
 import requests
 import json
 from pprint import pprint
-import config
+from config import API_KEY
 
 
 
@@ -13,7 +16,7 @@ def get_jsonresponse(image, organ: str) -> dict:
 	"""A function that accepts an image and an  text input from the user and returns
 	submits the user input to the plant.net machine learning api for plant recognition"""
 	
-	api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={config.API_KEY}"
+	api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
 
 	data = {
 		'organs': [organ]

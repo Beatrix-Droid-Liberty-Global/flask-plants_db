@@ -1,0 +1,5 @@
+to do:
+
+-check that new user's password = confirm password
+-fix isssue that lets any username with any random password log in
+-create a db for the plants where users can store their plants
