@@ -6,18 +6,19 @@ from flask_login import login_user, LoginManager, login_required, logout_user#fo
 
 from werkzeug.utils import secure_filename #to ensure that users don't upload an file with a potentially dangerous name (sql injections)
 from flask_bcrypt import Bcrypt #for hashing passwords
-from config import SECRET_KEY
+from config import SECRET_KEY, SECRET_RECAPTCHA
 import api_requests #to process the requests from users
 
 
 #creating the user class
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm #for creating forms through flask
+from flask_wtf import FlaskForm, RecaptchaField #for creating forms through flask
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, RadioField #for creating fields in input forms
 from wtforms.validators import InputRequired, Length, ValidationError #for validating user input in the forms
-from flask_login import UserMixin
+from flask_login import UserMixin 
+from threading import Lock #to allow only one user at a time to upload files to the upload_user_dir
 
 app = Flask(__name__)
 
@@ -26,13 +27,15 @@ app.config["SECRET_KEY"]= SECRET_KEY
 app.config["MAX_CONTENT_LENGTH"] = 100*1024*1024 #100MB max-limit per image
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =False
 app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///Users.db'
+app.config['RECAPTCHA_PUBLIC_KEY']="6LfjQFEiAAAAAHAXHXVSAjBIcOg9vDOa9lsXo0tZ"
+app.config['RECAPTCHA_SECRET_KEY'] = SECRET_RECAPTCHA
 
 bcrypt = Bcrypt(app)
 db= SQLAlchemy(app)
 login_manager=LoginManager()
 login_manager.init_app(app)#will allow flask and login manager to work together when users are logging in
 login_manager.login_view ="login"
-
+lock = Lock()
 
 
 
@@ -49,6 +52,7 @@ class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder":"Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "password"})
     confirm_password = PasswordField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "confirm password"})
+    recaptcha = RecaptchaField()
     submit = SubmitField("Register")
 
     def validate_username(self, username):
@@ -120,6 +124,7 @@ def view_plants():
     #check if the file  the client wants to upload matches the specified requirements
     form = UploadImage()
     if form.validate_on_submit():
+        lock.acquire()
 
         organ = form.organ.data
         filename = secure_filename(form.file.data.filename)
@@ -128,6 +133,7 @@ def view_plants():
         
         #process the image and make the api request
         json_response = api_requests.get_json_response(filename, organ)
+        lock.release() #release the lock on the upload folder so that another incoming client can write to it.
         processed_response = api_requests.process_response(json_response)
         flash(processed_response)
         return render_template("your_plants.html", form = form, file = f'static/user_uploads/{filename}')

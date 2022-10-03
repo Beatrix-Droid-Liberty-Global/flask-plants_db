@@ -34,7 +34,9 @@
           {{form.confirm_password(class="form-control")}}
           <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
         </div>
-      
+        <div class="mb-3 form-check">
+        {{form.recaptcha}}
+      </div>
         {{form.submit(class="btn btn-success container")}}
      
 </form>
