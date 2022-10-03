@@ -88,7 +88,7 @@ def register_user():
     if request.method == "POST":
         if form.validate_on_submit():
             if form.confirm_password.data != form.password.data:
-                flash("the two password fields don/t match, please enter them correctly")
+                flash("The two password fields donn't match, please enter them correctly")
                 return render_template('new_user.html', form = form)
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = Users(username=form.username.data, password= hashed_password)
@@ -114,7 +114,7 @@ def login():
 
     return render_template("index.html", form=form)
 
-@app.route("/view_plants", methods =["GET","POST"])
+@app.route("/view_plants", methods =["GET"])
 @login_required
 def view_plants():
     #check if the file  the client wants to upload matches the specified requirements

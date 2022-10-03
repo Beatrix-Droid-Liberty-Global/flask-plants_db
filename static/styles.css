@@ -71,3 +71,19 @@ h1{
   right: 30%;
 }
 
+ul{
+  list-style-type: none;
+}
+
+
+
+.flashes{
+  text-align:center;
+  margin-top:3%;
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: rgb(220, 113, 113);
+  opacity: 0.9;
+  color:white;
+  border-radius: 10px;
+}
