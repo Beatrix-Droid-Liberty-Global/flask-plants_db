@@ -70,6 +70,10 @@ body{
     border-radius: 15px;
   }
 
+  .upload{
+    margin:5px;
+  }
+
 
   footer .button-container-view_plants{
     width: 27%;

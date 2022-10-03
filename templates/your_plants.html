@@ -18,13 +18,18 @@
     <p>Upload an image and select whether it is a leaf, flower, fruit or bark/stem picture</p>
     <div class="form container">
     <form action="#" method="post" enctype="multipart/form-data">
+      
         {{ form.hidden_tag() }}
-        {{ form.file }}
-        {{ form.organs }}
-        <div class="mb-3"></div>
-        {{ form.upload(class="btn btn-primary") }}
-        <div class="mb-3"></div>
+        {{ form.file(class="btn btn-light") }}
+
+        <div class="form-check disabled">
+            {{ form.organs }}
+        </div>
+        <div class="mb-3 container">
+        {{ form.upload(class="btn btn-primary upload") }}
+        </div>
       </form>
+
     </div>
         <a href="#">view plants:><a>
    
