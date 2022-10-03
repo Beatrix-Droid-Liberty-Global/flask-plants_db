@@ -130,7 +130,7 @@ def view_plants():
         json_response = api_requests.get_json_response(filename, organ)
         processed_response = api_requests.process_response(json_response)
         flash(processed_response)
-        return render_template("your_plants.html", form = form)
+        return render_template("your_plants.html", form = form, file = f'static/user_uploads/{filename}')
     return render_template("your_plants.html", form = form)
 
 @app.route("/logout", methods=["GET", "POST"])
