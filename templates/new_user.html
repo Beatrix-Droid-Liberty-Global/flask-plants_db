@@ -4,18 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
     <title>New User</title>
 </head>
 <body>
+  <div class="container">
     <h1> Welcome to the register page of the plant identifier </h1>
+  </div>
 
     <form method="POST">
-    
       {{form.hidden_tag()}}
-      {{form.username}}
-      {{form.password}}
-      {{form.confirm_password}}
-      {{form.submit}}
+     
+
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Username</label>
+    {{form.username(class="form-control")}}
+    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+  </div>
+  <div class="mb-3 form-check">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    {{form.password(class="form-control")}}
+    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+  </div>
+  <div class="mb-3 form-check">
+    <label for="exampleInputPassword1" class="form-label">ConfirmPassword</label>
+    {{form.confirm_password(class="form-control")}}
+    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+  </div>
+  {{form.submit(class="btn btn-success")}}
+</form>
+
     </form>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
