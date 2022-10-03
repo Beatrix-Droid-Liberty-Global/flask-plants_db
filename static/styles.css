@@ -35,7 +35,7 @@ body{
   display:flex; 
   flex-direction:column; }
 
-  footer{
+  .login-footer{
     width: 90%;
     margin-top:auto; 
     margin-left: auto;
@@ -73,7 +73,6 @@ body{
 
   footer .button-container-view_plants{
     width: 27%;
-   
     opacity: 0.9;
     margin:auto;
     text-align: center;
