@@ -47,18 +47,23 @@ def get_json_response(image, organ: str) -> dict:
 
 
 
-def process_response(json_result):
+def process_response(json_result)->dict:
 
 	""""A function that takes the json from the api response and extracts the information we 
 	need to display on the frontend"""
 
+	
 	plant_name = json_result["bestMatch"]
 	pictures_uploaded = json_result["query"]["organs"]
 	common_name = json_result["results"][2]["species"]["commonNames"]
 	family_name = json_result["results"][2]["species"]["family"]["scientificName"]
 	genus = json_result["results"][2]["species"]["genus"]["scientificName"]
 
-	return plant_name, pictures_uploaded, common_name, family_name, genus
+	#now to display the multiple common names in a neat string and not a list:
+	common_names = ""
+	for name in common_name:
+		common_name += name
+	return {"Scientific Plant Name:": plant_name, "Organ searched for:": pictures_uploaded[0], "Common Name:": common_names, "Family Name:": family_name, "Genus:": genus}
 
 
 #print(get_json_response("snake_plant.jpg", "leaf"))

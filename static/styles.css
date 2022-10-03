@@ -137,3 +137,16 @@ ul{
   color:white;
   border-radius: 10px;
 }
+
+
+.plant-flashes{
+  text-align:center;
+  margin-top:3%;
+  padding: 7px;
+  margin-left: 20%;
+  margin-right: 20%;
+  background-color: white;
+  opacity: 0.9;
+  color:red;
+  border-radius: 10px;
+}
