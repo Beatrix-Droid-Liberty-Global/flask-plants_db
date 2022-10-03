@@ -18,8 +18,9 @@ form{
 }
 
 .register-container{
-  margin: auto;
+  margin-bottom: 12%;    
 }
+
 
 .footer-container{
   width: 100%;
@@ -67,6 +68,6 @@ h1{
   position:absolute;
   top: 5%;
   left: 30%;
-  right: 30;
+  right: 30%;
 }
 
