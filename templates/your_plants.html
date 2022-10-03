@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
     <title>Your plants</title>
 </head>
 <body>
@@ -12,16 +16,25 @@
     <p>upload a new plant for identification, view your previous plants or delete all your previously viewed plants</p>
 
     <p>Upload an image and select whether it is a leaf, flower, fruit or bark/stem picture</p>
+    <div class="form container">
     <form action="#" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {{ form.file }}
         {{ form.organs }}
-        {{ form.upload }}
-      
+        <div class="mb-3"></div>
+        {{ form.upload(class="btn btn-primary") }}
+        <div class="mb-3"></div>
       </form>
+    </div>
         <a href="#">view plants:><a>
-            <button><a href="{{ url_for('logout')}}">Press Here to Log Out</a></button>
-   <button><a href="#">Press Here to Delete Account</a></button>
-        
+   
 </body>
+<footer class="view_plants_footer">
+    <div class="button-container-view_plants">
+    <button class="btn btn-warning"><a href="{{ url_for('logout')}}">Press Here to Log Out</a></button>
+    </div>
+    <div class="button-container-view_plants">
+<button class="btn btn-danger"><a href="#">Press Here to Delete Account</a></button>
+</div>
+</footer>
 </html>

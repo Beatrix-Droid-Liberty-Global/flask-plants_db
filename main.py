@@ -115,7 +115,7 @@ def login():
     return render_template("index.html", form=form)
 
 @app.route("/view_plants", methods =["GET"])
-@login_required
+#@login_required
 def view_plants():
     #check if the file  the client wants to upload matches the specified requirements
     form = UploadImage()
