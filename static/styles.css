@@ -124,6 +124,13 @@ ul{
   list-style-type: none;
 }
 
+@supports (scrollbar-color:rgb(145, 207, 53) rgb(188, 220, 200)) {
+  *{
+    scrollbar-color:rgb(145, 207, 53) rgb(188, 220, 200);
+    scrollbar-width: auto;
+  }
+}
+
 
 
 .flashes{
