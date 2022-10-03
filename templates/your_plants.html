@@ -13,14 +13,19 @@
 <body>
     <h1> Welcome to your plants collection!</h1>
   
-    <p>upload a new plant for identification, view your previous plants or delete all your previously viewed plants</p>
+    <p>Upload a new plant for identification, view your previous plants or delete all your previously viewed plants.
+    Upload an image and select whether it is a leaf, flower, fruit or bark/stem picture
+    </p>
+    
 
-    <p>Upload an image and select whether it is a leaf, flower, fruit or bark/stem picture</p>
+    <!----
+    <div class="button-container-view_plants">
+    <a  class="btn btn-success" href="#">view plants!<a>
+    </div>
+--->
 
-
-    <div class="view-plants-form-container">
+<div class="view-plants-form-container">
     <form action="#" method="post" enctype="multipart/form-data">
-      
         {{ form.hidden_tag() }}
         {{ form.file(class="btn btn-light") }}
 
@@ -31,10 +36,7 @@
         {{ form.upload(class="btn btn-primary upload") }}
         </div>
       </form>
-
     </div>
-        <a href="#">view plants:><a>
-   
 </body>
 <footer class="view_plants_footer">
     <div class="button-container-view_plants">
