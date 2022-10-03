@@ -131,6 +131,12 @@ ul{
   }
 }
 
+/*
+  @media screen and (max-width: 815px) {
+  .left, .main, .right {
+    width: 100%; /* The width is 100%, when the viewport is 800px  934 px or smaller for view plants forms or smaller */
+    /* deal with register user form aesthetics and make it reposnive*/
+*/
 
 
 .flashes{
