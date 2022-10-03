@@ -48,7 +48,7 @@ class Users(db.Model, UserMixin):
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder":"Username"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "password"})
-    confirm_password = PasswordField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "confirm_password"})
+    confirm_password = PasswordField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "confirm password"})
     submit = SubmitField("Register")
 
     def validate_username(self, username):
