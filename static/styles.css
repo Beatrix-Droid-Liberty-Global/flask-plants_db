@@ -54,10 +54,13 @@ body{
   }
 
   .view_plants_footer{
-    width: 90%;
+    width: 100%;
     margin-top:auto; 
     margin-left: auto;
     margin-right: auto;
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(246, 246, 251, 0) 0%, rgb(145, 207, 53) 100%);
+    
     opacity: 0.9;
   }
 

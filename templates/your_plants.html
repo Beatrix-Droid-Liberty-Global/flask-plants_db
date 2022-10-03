@@ -38,17 +38,22 @@
       </form>
     </div>
 
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages()%}
     {% if messages %}
-    <div class="flashes" role="alert">
-      <ul>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
+    <div class="answer-container">
+    <ul class=flashes>
+        
+        {% for message in messages %}
+            {% for key, value in message.items() %}
+                <li>{{key}} {{value}}</li>
+                    {% endfor %}    
+            {% endfor %}
+        </ul>
     </div>
-    {% endif %}
-  {% endwith %}
+        {% endif %}
+    {%endwith %}
+    
+
 </body>
 <footer class="view_plants_footer">
     <div class="button-container-view_plants">
