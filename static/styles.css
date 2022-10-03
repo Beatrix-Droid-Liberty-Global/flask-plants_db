@@ -110,7 +110,7 @@ h1{
   right: 30%;
 }
 
-p{
+p:not(#footer_para){
   background-color: rgb(255,255,255);
   opacity: 0.9;
   padding: 7px;
