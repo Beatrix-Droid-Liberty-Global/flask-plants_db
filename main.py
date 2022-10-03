@@ -67,7 +67,7 @@ class LoginForm(FlaskForm):
 #creating the upload image form
 class UploadImage(FlaskForm):
     file = FileField(validators=[FileRequired(), FileAllowed(['png', 'jpeg','jpg'], 'Images only!')]) #allow only files with the correct extension to be submitted
-    organs = RadioField('Label', choices=[('leaf','leaf'),('flower','flower'),('fruit','fruit'),('bark','bark/stem')])
+    organ = RadioField('Label', choices=[('leaf','leaf'),('flower','flower'),('fruit','fruit'),('bark','bark/stem')])
     upload = SubmitField("Upload")
 
 
@@ -114,17 +114,22 @@ def login():
 
     return render_template("index.html", form=form)
 
-@app.route("/view_plants", methods =["GET"])
+@app.route("/view_plants", methods =["GET", "POST"])
 #@login_required
 def view_plants():
     #check if the file  the client wants to upload matches the specified requirements
     form = UploadImage()
     if form.validate_on_submit():
 
+        organ = form.organ.data
         filename = secure_filename(form.file.data.filename)
+        
         form.file.data.save('static/user_uploads/' + filename) #grab the file and save it in the uploads directory
-
-
+        
+        #process the image and make the api request
+        json_response = api_requests.get_json_response(filename, organ)
+        processed_response = api_requests.process_response(json_response)
+        flash(processed_response)
         return render_template("your_plants.html", form = form)
     return render_template("your_plants.html", form = form)
 

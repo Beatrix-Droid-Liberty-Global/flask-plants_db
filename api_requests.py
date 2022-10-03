@@ -11,7 +11,7 @@ from config import API_KEY
 
 
 
-def get_jsonresponse(image, organ: str) -> dict:
+def get_json_response(image, organ: str) -> dict:
 
 	"""A function that accepts an image and an  text input from the user and returns
 	submits the user input to the plant.net machine learning api for plant recognition"""
@@ -19,7 +19,7 @@ def get_jsonresponse(image, organ: str) -> dict:
 	api_endpoint = f"https://my-api.plantnet.org/v2/identify/all?api-key={API_KEY}"
 
 	data = {
-		'organs': [organ]
+		'organs': organ
 	}
 
 	image_path_1 = f"static/user_uploads/{image}"
@@ -52,10 +52,13 @@ def process_response(json_result):
 	""""A function that takes the json from the api response and extracts the information we 
 	need to display on the frontend"""
 
-	plant_name = test_json["bestMatch"]
-	pictures_uploaded = test_json["query"]["organs"]
-	common_name = test_json["results"][2]["species"]["commonNames"]
-	family_name = test_json["results"][2]["species"]["family"]["scientificName"]
-	genus = test_json["results"][2]["species"]["genus"]["scientificName"]
+	plant_name = json_result["bestMatch"]
+	pictures_uploaded = json_result["query"]["organs"]
+	common_name = json_result["results"][2]["species"]["commonNames"]
+	family_name = json_result["results"][2]["species"]["family"]["scientificName"]
+	genus = json_result["results"][2]["species"]["genus"]["scientificName"]
 
 	return plant_name, pictures_uploaded, common_name, family_name, genus
+
+
+#print(get_json_response("snake_plant.jpg", "leaf"))

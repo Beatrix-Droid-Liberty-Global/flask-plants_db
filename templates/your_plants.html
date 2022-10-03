@@ -30,13 +30,25 @@
         {{ form.file(class="btn btn-light") }}
 
         <div class="form-check disabled">
-            {{ form.organs }}
+            {{ form.organ }}
         </div>
         <div class="mb-3 container">
         {{ form.upload(class="btn btn-primary upload") }}
         </div>
       </form>
     </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="flashes" role="alert">
+      <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  {% endwith %}
 </body>
 <footer class="view_plants_footer">
     <div class="button-container-view_plants">
