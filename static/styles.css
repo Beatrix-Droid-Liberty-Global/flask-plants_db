@@ -17,6 +17,10 @@ form{
   margin:auto;
 }
 
+.register-container{
+  margin: auto;
+}
+
 .footer-container{
   width: 100%;
   background-color: rgb(145, 207, 53);
