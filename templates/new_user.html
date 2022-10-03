@@ -12,32 +12,35 @@
 </head>
 <body>
   <div class="container">
-    <h1> Welcome to the register page of the plant identifier </h1>
+    <h1 > Welcome to the register page of the plant identifier </h1>
   </div>
 
+  <div class="register-form-container">
     <form method="POST">
       {{form.hidden_tag()}}
+    
+        <div class="mb-3 form-check">
+          <label for="exampleInputPassword1" class="form-label">Username</label>
+          {{form.username(class="form-control")}}
+          <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+        </div>
+        <div class="mb-3 form-check">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          {{form.password(class="form-control")}}
+          <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+        </div>
+        <div class="mb-3 form-check">
+          <label for="exampleInputPassword1" class="form-label">ConfirmPassword</label>
+          {{form.confirm_password(class="form-control")}}
+          <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
+        </div>
+      
+        {{form.submit(class="btn btn-success container")}}
      
-
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Username</label>
-    {{form.username(class="form-control")}}
-    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
-  </div>
-  <div class="mb-3 form-check">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    {{form.password(class="form-control")}}
-    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
-  </div>
-  <div class="mb-3 form-check">
-    <label for="exampleInputPassword1" class="form-label">ConfirmPassword</label>
-    {{form.confirm_password(class="form-control")}}
-    <div id="emailHelp" class="form-text">Must be at least 4 characters long.</div>
-  </div>
-  {{form.submit(class="btn btn-success")}}
 </form>
+</div>
 
-    </form>
+  
     {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
