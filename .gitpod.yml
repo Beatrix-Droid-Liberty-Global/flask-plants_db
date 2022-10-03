@@ -1,0 +1,13 @@
+
+tasks:
+  - command: python main.py
+
+
+
+vscode:
+  extensions:
+    - esbenp.prettier-vscode
+    - ms-python.python
+    - oderwat.indent-rainbow
+    - MatthewNespor.vscode-color-identifiers-mode
+    - kiteco.kite
