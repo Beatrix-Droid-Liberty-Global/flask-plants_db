@@ -39,7 +39,7 @@
     </div>
 
     {%if file %}
-      <img class="img-fluid mb-3 mb-lg-0 grid user_upload" src='{{file}}' alt=""/>
+      <img class="plant" src='{{file}}' alt=""/>
       {%endif%}
         
 
@@ -65,8 +65,6 @@
     <div class="button-container-view_plants">
     <button class="btn btn-warning"><a href="{{ url_for('logout')}}">Press Here to Log Out</a></button>
     </div>
-    <div class="button-container-view_plants">
-<button class="btn btn-danger"><a href="{{ url_for('logout')}}">Press Here to Delete Account</a></button>
-</div>
+   
 </footer>
 </html>

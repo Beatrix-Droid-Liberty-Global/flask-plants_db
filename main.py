@@ -83,7 +83,7 @@ class UploadImage(FlaskForm):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.get(user_id) # loads the user object from the user id stored in the session
+    return Users.query.get(int(user_id)) # loads the user object from the user id stored in the session
 
 
 
@@ -120,7 +120,7 @@ def login():
     return render_template("index.html", form=form)
 
 @app.route("/view_plants", methods =["GET", "POST"])
-#@login_required
+@login_required
 def view_plants():
     #check if the file  the client wants to upload matches the specified requirements
     form = UploadImage()
@@ -147,13 +147,21 @@ def logout():
     return redirect(url_for("login"))
 
 
-# Wrap Flask app with Talisman
-#Talisman(app, content_security_policy=None)
+
+
+
+@app.route("/delete")
+def delete():
+    """A temporary route that clears the database whilst I work on fixing the session bug."""
+
+    Users.query.delete()
+    db.session.commit()
+    return render_template("delete_db.html")
+
 
 db.create_all()
 
 
 app.run(ssl_context='adhoc')
 
-if __name__ == "__main__":
-    app.run(ssl_context='adhoc')
+
