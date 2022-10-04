@@ -3,7 +3,7 @@
 from flask import render_template, url_for, flash, request, redirect #for the functioning of the flask application
 from flask_sqlalchemy  import SQLAlchemy #for creating the database
 from flask_login import login_user, LoginManager, login_required, logout_user#for logging users in and out
-
+#from flask_talisman import Talisman
 from werkzeug.utils import secure_filename #to ensure that users don't upload an file with a potentially dangerous name (sql injections)
 from flask_bcrypt import Bcrypt #for hashing passwords
 from config import SECRET_KEY, SECRET_RECAPTCHA
@@ -11,6 +11,7 @@ import api_requests #to process the requests from users
 
 
 #creating the user class
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm, RecaptchaField #for creating forms through flask
@@ -22,13 +23,14 @@ from threading import Lock #to allow only one user at a time to upload files to 
 
 app = Flask(__name__)
 
+
 #app configurations
 app.config["SECRET_KEY"]= SECRET_KEY
 app.config["MAX_CONTENT_LENGTH"] = 100*1024*1024 #100MB max-limit per image
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =False
 app.config['SQLALCHEMY_DATABASE_URI'] ='sqlite:///Users.db'
 app.config['RECAPTCHA_PUBLIC_KEY']="6LfjQFEiAAAAAHAXHXVSAjBIcOg9vDOa9lsXo0tZ"
-app.config['RECAPTCHA_SECRET_KEY'] = SECRET_RECAPTCHA
+app.config['RECAPTCHA_PRIVATE_KEY'] = SECRET_RECAPTCHA
 
 bcrypt = Bcrypt(app)
 db= SQLAlchemy(app)
@@ -92,7 +94,7 @@ def register_user():
     if request.method == "POST":
         if form.validate_on_submit():
             if form.confirm_password.data != form.password.data:
-                flash("The two password fields donn't match, please enter them correctly")
+                flash("The two password fields don't match, please enter them correctly")
                 return render_template('new_user.html', form = form)
             hashed_password = bcrypt.generate_password_hash(form.password.data)
             new_user = Users(username=form.username.data, password= hashed_password)
@@ -145,6 +147,9 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+
+# Wrap Flask app with Talisman
+#Talisman(app, content_security_policy=None)
 
 db.create_all()
 if __name__ == "__main__":

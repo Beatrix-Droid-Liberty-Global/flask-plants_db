@@ -62,7 +62,7 @@ def process_response(json_result)->dict:
 	#now to display the multiple common names in a neat string and not a list:
 	common_names = ""
 	for name in common_name:
-		common_name += name
+		common_names += name
 	return {"Scientific Plant Name:": plant_name, "Organ searched for:": pictures_uploaded[0], "Common Name:": common_names, "Family Name:": family_name, "Genus:": genus}
 
 
