@@ -3,7 +3,6 @@
 from flask import render_template, url_for, flash, request, redirect #for the functioning of the flask application
 from flask_sqlalchemy  import SQLAlchemy #for creating the database
 from flask_login import login_user, LoginManager, login_required, logout_user#for logging users in and out
-#from flask_talisman import Talisman
 from werkzeug.utils import secure_filename #to ensure that users don't upload an file with a potentially dangerous name (sql injections)
 from flask_bcrypt import Bcrypt #for hashing passwords
 from config import SECRET_KEY, SECRET_RECAPTCHA
@@ -152,6 +151,9 @@ def logout():
 #Talisman(app, content_security_policy=None)
 
 db.create_all()
-if __name__ == "__main__":
 
-    app.run(debug=True)
+
+app.run(ssl_context='adhoc')
+
+if __name__ == "__main__":
+    app.run(ssl_context='adhoc')

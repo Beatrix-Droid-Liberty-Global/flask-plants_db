@@ -4,7 +4,7 @@
 
 import requests
 import json
-from pprint import pprint
+
 from config import API_KEY
 
 
